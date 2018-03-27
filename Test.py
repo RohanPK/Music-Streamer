@@ -60,17 +60,20 @@ def download(name):
 		index=input("Enter the index number: ")
 		if int(index)>=1 and int(index)<=10:
 			break
-	name=driver.find_element_by_xpath('//*[@id="search-result"]/div['+str(index)+']/div/div/a').get_attribute('text').replace("\n","")	#Gets the Xpath of selected index
+	
+
+	elem=driver.find_element_by_xpath('//*[@id="search-result"]/div['+str(index)+']/div/div/a')		#Gets the Xpath of selected index
 	name=elem.get_attribute('text').replace("\n","")
 	name=name.replace('                        ','')
-	elem=driver.find_element_by_xpath('//*[@id="search-result"]/div['+str(index)+']/div/div/a')
+	
 	driver.get(elem.get_attribute('href'))
-	driver.implicitly_wait(10)		#Wait for page to load otherwise elements might not load
+	driver.implicitly_wait(5)		#Wait for page to load otherwise elements might not load
 	try:
 		elem=driver.find_element_by_xpath('//*[@id="mp4"]/table/tbody/tr[4]/td[3]/a')		#Check if 144p exists
 	except:
 		elem=driver.find_element_by_xpath('//*[@id="mp4"]/table/tbody/tr[3]/td[3]/a')		#If tr[4] doesn't exist try tr[3]
 	elem.click()
+	name=name	
 	check_download(name)
 	
 
@@ -80,7 +83,7 @@ def check_download(name):
 		print("#", end='')
 		if 'videoplayback' in os.listdir('/home/rohan/Downloads/'):			#Check if download is complete every 1 second
 			break
-		time.sleep(1);
+		time.sleep(5);
 	rename_download(name)
 
 def rename_download(name):
