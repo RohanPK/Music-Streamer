@@ -3,8 +3,11 @@ Terminal based Music Player
 Python script to play music either from the downloads directory or stream/download it from Youtube.
 ## Pre-Requisites
 -Selenium with Python
+
 -Python-Vlc 3
+
 -ChromeDriver
+
 ```
 pip3 install selenium
 
