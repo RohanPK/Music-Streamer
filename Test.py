@@ -16,12 +16,14 @@ def initialize():
 	prefs = {'download.default_directory' : download_directory}
 	options.add_experimental_option('prefs', prefs)
 
-def search(name):
+def search():
 	flag=True
+	print("Enter the name of the song")
+	name=input()
 	for songs in song_list:
 		if name in songs:
 			flag=False
-			song = vlc.MediaPlayer(download_directory+name)
+			song = vlc.MediaPlayer(download_directory+'/'+songs)
 			song.play()
 			break
 	if flag==True:
@@ -51,15 +53,22 @@ def download(name):
 		index=input("Enter the index number: ")
 		if int(index)>=1 and int(index)<=10:
 			break
+	name=driver.find_element_by_xpath('//*[@id="search-result"]/div['+str(index)+']/div/div/a').get_attribute('text').replace("\n","")
+	name=elem.get_attribute('text').replace("\n","")
+	name=name.replace('                        ','')
 	elem=driver.find_element_by_xpath('//*[@id="search-result"]/div['+str(index)+']/div/div/a')
 	driver.get(elem.get_attribute('href'))
+	driver.implicitly_wait(10)
 	elem=driver.find_element_by_xpath('//*[@id="mp4"]/table/tbody/tr[3]/td[3]/a')		
 	elem.click()
-	check_download()
+	for i in range (10):
+		print('#',ends='')
+		driver.implicitly_wait(5)
+	check_download(name)
 
-def check_download():
-	driver.get('chrome://downloads/')
-	
+def check_download(name):
+	#driver.get('chrome://downloads/')
+	os.rename('/home/rohan/Downloads/videoplayback',download_directory+'/'+name)
 initialize()
 search()
 while True:
@@ -71,9 +80,7 @@ while True:
 		driver.close()
 		break
 	elif option == 'n':
-		print("Enter the name of the song")
-		name=input()
-		search(name)
+		search()
 	elif option == 'h':
 		print('Press: \n n to search \n l to list all songs  \n q to quit \n')
 
